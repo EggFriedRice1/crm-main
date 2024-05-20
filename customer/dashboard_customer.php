@@ -111,8 +111,7 @@
     </section>
     <!-- CONTENT -->
 <?php
-
-	if(isset($_POST["buy"])){
+		if(isset($_POST["buy"])){
         try {
 			$customerName = $_SESSION["Email"]; 
             $purchaseDate = date("Y-m-d H:i:s");
