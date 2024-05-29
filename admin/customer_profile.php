@@ -1,5 +1,24 @@
 <?php 
 include '../include/customerSessionProfile.php';
+require_once '../customer_barcode/vendor/autoload.php'; // Include the Composer autoload file
+
+use Picqer\Barcode\BarcodeGeneratorPNG; 
+
+function generateBarcodeImage($barcode) {
+    try {
+        // Initialize the barcode generator
+        $generator = new BarcodeGeneratorPNG();
+        
+        // Generate the barcode image
+        $barcodeImage = $generator->getBarcode($barcode, $generator::TYPE_CODE_128);
+        
+        // Output the barcode image
+        return $barcodeImage;
+    } catch (Exception $e) {
+        return false; // Return false if there's an error generating the barcode image
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -127,7 +146,13 @@ include '../include/customerSessionProfile.php';
 								<?php if (!empty($customer['barcode_image'])): ?>
 									<div class="profile-label">Barcode:</div>
 									<div class="profile-value">
-										<img src="<?php echo $customer['barcode_image']; ?>" class="barcode">
+										<?php 
+										$barcodeImage = generateBarcodeImage($customer['barcode_image']);
+										if ($barcodeImage !== false): ?>
+											<img src="data:image/png;base64,<?php echo base64_encode($barcodeImage); ?>" class="barcode">
+										<?php else: ?>
+											<div class="error">Failed to generate barcode image.</div>
+										<?php endif; ?>
 									</div>
 								<?php else: ?>
 									<div class="profile-label">Barcode:</div>

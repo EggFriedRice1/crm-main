@@ -11,14 +11,9 @@ try {
                 $FullName = $_POST['regFullname'];
                 $Email = $_POST['regEmail'];
                 $Contact = $_POST['regContact'];
-                $Barcode = uniqid(); // Generate unique ID for barcode
-                $BarcodeImagePath = '../uploaded_image/barcodes_img/' . $Barcode . '.png'; // Path to store barcode image
                 $Address = $_POST['regAddress'];
-                
-                // Generate barcode image
-                $generator = new BarcodeGeneratorPNG();
-                file_put_contents($BarcodeImagePath, $generator->getBarcode($Barcode, $generator::TYPE_CODE_128));
-                
+                $Barcode = "!". "2024".(rand(0,999999999));
+                         
                 // Insert user data into database
                 $pdoQuery = "INSERT INTO `customer_account`(`FullName`,`Email`,`Contact`, `Address`, `barcode_image`) 
                              VALUES (:customerFullName, :customerEmail, :customerContact, :customerAddress, :Barcode)";
@@ -28,7 +23,7 @@ try {
                     ":customerEmail" => $Email,
                     ":customerContact" => $Contact,
                     ":customerAddress" => $Address,
-                    ":Barcode" => $BarcodeImagePath,
+                    ":Barcode" => $Barcode,
                 ]);
                 
                 if ($pdoExec) {

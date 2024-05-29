@@ -31,6 +31,25 @@ try {
     echo $error->getMessage();
     exit; 
 }
+
+require_once '../customer_barcode/vendor/autoload.php'; // Include the Composer autoload file
+
+use Picqer\Barcode\BarcodeGeneratorPNG; 
+
+function generateBarcodeImage($barcode) {
+    try {
+        // Initialize the barcode generator
+        $generator = new BarcodeGeneratorPNG();
+        
+        // Generate the barcode image
+        $barcodeImage = $generator->getBarcode($barcode, $generator::TYPE_CODE_128);
+        
+        // Output the barcode image
+        return $barcodeImage;
+    } catch (Exception $e) {
+        return false; // Return false if there's an error generating the barcode image
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -45,11 +64,10 @@ try {
 	<link rel="stylesheet" href="../admincss/customers.css">
     <link rel="stylesheet" href="../admincss/loyalty_card.css">
 
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<title>AdminHub</title>
 </head>
 <body>
-
-
 		<!-- SIDEBAR -->
 		<section id="sidebar">
 		<a href="#" class="brand">
@@ -107,6 +125,10 @@ try {
         <main>
             <div class="head-title">
                 <!-- Head title content -->
+				 		<form id="barcode-form" action="add_loyalty_points.php" method="post">	
+                                <input type="text" name="scannedBarcode" placeholder="Scan barcode...">                  
+                            </div>
+                        </form>
             </div>
             <ul class="box-info">
                 <li>
@@ -121,11 +143,19 @@ try {
                         <h3>Banana Loyalty Card</h3>
 
                         <div class="barcode-container">
-                            <?php if (!empty($loyaltyCard['barcode_image'])): ?>
-                                <img src="<?php echo $loyaltyCard['barcode_image']; ?>" class="barcode" alt="Barcode">
-                            <?php else: ?>
-                                <p>No barcode available.</p>
-                            <?php endif; ?>
+						<?php if (!empty($loyaltyCard['barcode_image'])): ?>
+									<div class="profile-value">
+										<?php 
+										$barcodeImage = generateBarcodeImage($loyaltyCard['barcode_image']);
+										if ($barcodeImage !== false): ?>
+											<img src="data:image/png;base64,<?php echo base64_encode($barcodeImage); ?>" class="barcode">
+										<?php else: ?>
+											<div class="error">Failed to generate barcode image.</div>
+										<?php endif; ?>
+									</div>
+								<?php else: ?>
+									<div class="profile-value">No barcode available.</div>
+								<?php endif; ?>
                         </div>
                         
                     </div>
@@ -140,5 +170,7 @@ try {
 	</section>
 	<!-- CONTENT -->
 	<script src="script.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </body>
 </html>
