@@ -124,7 +124,7 @@
             $pdoStatement = $pdoConnect->prepare($pdoQuery);
             $pdoStatement->execute(array(':customerName' => $customerName, ':customerPdate' => $purchaseDate, ':customerPtotal' => $totalPurchaseAmount));
 			//update purchase
-			$pdoQuery = "UPDATE usertb_account SET purchaseTotal = purchaseTotal + :purchaseAmount, LoyaltyPoints = $loyaltycomputation WHERE Email = :email";
+			$pdoQuery = "UPDATE customer_account SET purchaseTotal = purchaseTotal + :purchaseAmount, LoyaltyPoints = $loyaltycomputation WHERE Email = :email";
             $pdoResult = $pdoConnect->prepare($pdoQuery);
             $pdoResult->execute(array(':purchaseAmount' => $totalPurchaseAmount, ':email' => $customerName));
 
