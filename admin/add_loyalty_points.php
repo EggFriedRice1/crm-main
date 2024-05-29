@@ -22,8 +22,8 @@ if ($_POST['scannedBarcode']) {
 
             // Update customer loyalty points
             $updateQuery = "UPDATE customer_account SET LoyaltyPoints = :points, TotalVisits = :visits WHERE id = :id";
-            $updateStmt = $pdoConnect->prepare($updateQuery);
-            $updateStmt->execute(['points' => $newPoints, 'visits' => $newVisitsPoints, 'id' => $customerId]);
+            $updateResult = $pdoConnect->prepare($updateQuery);
+            $updateResult->execute(['points' => $newPoints, 'visits' => $newVisitsPoints, 'id' => $customerId]);
 
             echo '<script>';
             echo 'alert("Points added!");';
