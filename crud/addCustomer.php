@@ -12,7 +12,11 @@ try {
                 $Email = $_POST['regEmail'];
                 $Contact = $_POST['regContact'];
                 $Address = $_POST['regAddress'];
-                $Barcode = "!". "2024".(rand(0,999999999));
+                
+                //$Barcode = "!". "2024".(rand(0,999999999));
+                $Barcode = $_POST['addBarcode'];
+
+
                          
                 // Insert user data into database
                 $pdoQuery = "INSERT INTO `customer_account`(`FullName`,`Email`,`Contact`, `Address`, `barcode_image`) 
@@ -119,6 +123,7 @@ try {
                                 <input type="email" name="regEmail" placeholder="Email" required="" class="inputBox">
                                 <input type="number" name="regContact" placeholder="Contact" required="" class="inputBox">
                                 <input type="text" name="regAddress" placeholder="Address" required="" class="inputBox">
+                                <input type="text" name="addBarcode" placeholder="Barcode" required="" class="inputBox">
                                 <input type="submit" name="addCustomer" class="btn" value="Add">
                             </form>
                         </div>

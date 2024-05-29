@@ -17,7 +17,6 @@ include '../include/customerSessionDashboard.php';
 </head>
 <body>
 
-
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="#" class="brand">
@@ -37,7 +36,6 @@ include '../include/customerSessionDashboard.php';
 					<span class="text">Customers</span>
 				</a>
 			</li>
-			
 			
 		</ul>
 		<ul class="side-menu">
